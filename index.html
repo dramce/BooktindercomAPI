@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title> BINDER </title>
+</head>
+<body>
+
+    <h1 center> BINDER </h1>
+    <div class="container-fluid">
+        <div class="landing col-md-4">
+            <button type="button" class="landingbutton">START</button>
+        </div>
+        <div id="mainPage">
+            <div id="bookContainer" class="row">
+                <div class="col-md-4">
+                    <h2 id="title"></h2>
+                    <img id="cover">
+                    <div>
+                        <p id="description">
+                        </p>
+                        <a class="linkWikipedia" target="_blank">+info</a>
+                    </div>
+                    <div>
+                        <a class="linkComprar" target="_blank">Comprar</a>
+                    </div>
+                </div>
+            </div>
+        <div>
+            <button id="buttonLike" data-Opinion="like" class="botao">
+                <img src="https://afeld.github.io/emoji-css/emoji/heart.png">
+            </button>
+            <button id="buttonDislike" data-Opinion="dislike" class="nbotao">
+                <img src="https://afeld.github.io/emoji-css/emoji/broken_heart.png">
+            </button>
+        </div>
+        </div>
+            <div id="endPage">
+                <table id="tabela">
+                    <thead>
+                        <tr>
+                            <td>Opiniao</td>
+                            <td>Likes</td>
+                            <td>Disikes</td>
+                        </tr>
+                    </thead>
+                    <tbody id="counter">
+                        
+                    </tbody>
+                </table>
+
+                <br>
+                <label>Likes: </label><label id="contador1"></label>
+                <br>
+                <label>Dislikes: </label><label id="contador2"></label>
+            </div>
+    </div>
+    <label id="likes1">  </label>
+    <script type="text/javascript" src="jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="script1.js"></script>
+</body>
+</html>
