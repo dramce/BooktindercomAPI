@@ -14,10 +14,14 @@ function Book(title, description, cover, infoLink, buyLink) {
         $("#description").html(this.description);
         $("#cover").attr("src", this.cover);
         $("a.linkWikipedia").attr("href", this.infoLink);
-        $("a.linkComprar").attr("href", this.buyLink);
+        if (buyLink == undefined) {
+            return (erro);
+        } else {
+            $("a.linkComprar").attr("href", this.buyLink);
+        }
     }
 }
-
+var erro = "Não disponivel para comprar";
 function Queue () {
 
     this.data = [];
