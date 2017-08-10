@@ -1,10 +1,10 @@
-function Book(title, description, cover, linkWikipedia, linkComprar) {
+function Book(title, description, cover, infoLink, buyLink) {
     
     this.title = title;
     this.description = description;
     this.cover = cover;
-    this.linkWikipedia = linkWikipedia;
-    this.linkComprar = linkComprar;
+    this.infoLink = infoLink;
+    this.buyLink = buyLink;
     this.like = 0;
     this.dislike = 0; 
 
@@ -13,8 +13,8 @@ function Book(title, description, cover, linkWikipedia, linkComprar) {
         $("#title").html(this.title);
         $("#description").html(this.description);
         $("#cover").attr("src", this.cover);
-        $("a.linkWikipedia").attr("href", this.linkWikipedia);
-        $("a.linkComprar").attr("href", this.linkComprar);
+        $("a.linkWikipedia").attr("href", this.infoLink);
+        $("a.linkComprar").attr("href", this.buyLink);
     }
 }
 
@@ -68,8 +68,9 @@ function init() {
             var cover = baseDados.volumeInfo.imageLinks.thumbnail;
             var title = baseDados.volumeInfo.title;
             var description = baseDados.volumeInfo.description;
+            var infoLink = baseDados.volumeInfo.infoLink;
             var buyLink = baseDados.saleInfo.buyLink;
-            var book = new Book(title, description, cover, buyLink);
+            var book = new Book(title, description, cover, infoLink, buyLink);
             library.addBook(book);
         };
         library.nextbook();

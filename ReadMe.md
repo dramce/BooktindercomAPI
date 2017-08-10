@@ -1,1 +1,1 @@
-Este projecto serva para criar um tinder para livros.
+Este projecto serve para criar um tinder para livros.
