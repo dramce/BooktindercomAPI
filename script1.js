@@ -1,10 +1,9 @@
-function Book(title, description, cover, infoLink, buyLink) {
+function Book(title, description, cover, infoLink) {
     
     this.title = title;
     this.description = description;
     this.cover = cover;
     this.infoLink = infoLink;
-    this.buyLink = buyLink;
     this.like = 0;
     this.dislike = 0; 
 
@@ -13,15 +12,10 @@ function Book(title, description, cover, infoLink, buyLink) {
         $("#title").html(this.title);
         $("#description").html(this.description);
         $("#cover").attr("src", this.cover);
-        $("a.linkWikipedia").attr("href", this.infoLink);
-        if (buyLink == undefined) {
-            return (erro);
-        } else {
-            $("a.linkComprar").attr("href", this.buyLink);
-        }
+        $(".linkWikipedia").attr("href", this.infoLink);
     }
 }
-var erro = "Não disponivel para comprar";
+
 function Queue () {
 
     this.data = [];
@@ -60,46 +54,30 @@ function Library() {
         this.actualBook.dislike++;
     }
 }
-var library = null;
-
-function init() {
-    var paramPesquisa = "spiderman";
-    $.get("https://www.googleapis.com/books/v1/volumes?q="+encodeURI(paramPesquisa)).done(function(data){
-        
-        library = new Library();
+var library = new Library();
+var contador = 1;
+function init(paramPesquisa) {
+    $.get(" https://www.googleapis.com/books/v1/volumes?q="+encodeURI(paramPesquisa)+"&maxResults=2&startIndex=" +contador).done(function(data){    
         for(var i=0; i < data.items.length; i++) {
             var baseDados =  data.items[i];
-            var cover = baseDados.volumeInfo.imageLinks.thumbnail;
-            var title = baseDados.volumeInfo.title;
-            var description = baseDados.volumeInfo.description;
-            var infoLink = baseDados.volumeInfo.infoLink;
-            var buyLink = baseDados.saleInfo.buyLink;
-            var book = new Book(title, description, cover, infoLink, buyLink);
+            var cover = baseDados.volumeInfo.imageLinks != null ? baseDados.volumeInfo.imageLinks.thumbnail: "http://demo.vdiscovery.org/aum/images/no-image.png";
+            var title = baseDados.volumeInfo.title != null ? baseDados.volumeInfo.title: "N/A";
+            var description = baseDados.volumeInfo.description != null ? baseDados.volumeInfo.description: "N/A";
+            var infoLink = baseDados.volumeInfo.infoLink != null ? baseDados.volumeInfo.infoLink: "N/A";
+            var book = new Book(title, description, cover, infoLink);
             library.addBook(book);
         };
         library.nextbook();
-        
     }).fail(function(data){
         console.log(data);
     });
 };
 
-//var book1 = new Book("Harry Potter e a Pedra Filosofal", "A boy who learns on his eleventh birthday that he is the orphaned son of two powerful wizards and possesses unique magical powers of his own. He is summoned from his life as an unwanted child to become a student at Hogwarts, an English boarding school for wizards. There, he meets several friends who become his closest allies and help him discover the truth about his parents' mysterious deaths.", "http://ecx.images-amazon.com/images/I/51eqYMqRNpL._SX332_BO1,204,203,200_.jpg", "https://en.wikipedia.org/wiki/Harry_Potter_and_the_Philosopher's_Stone", "https://www.wook.pt/livro/harry-potter-e-a-pedra-filosofal-j-k-rowling/46725")
-//var book2 = new Book("Harry Potter e a Camara dos Segredos", "Harry Potter and his friends, Ron and Hermione, facing new challenges during their second year at Hogwarts School of Witchcraft and Wizardry as they try to discover a dark force that is terrorizing the school.", "https://images-na.ssl-images-amazon.com/images/I/51jNORv6nQL.jpg", "https://en.wikipedia.org/wiki/Harry_Potter_and_the_Chamber_of_Secrets", "https://www.wook.pt/livro/harry-potter-e-a-camara-dos-segredos-j-k-rowling/46758")
-//var book3 = new Book("Harry Potter e o Prisioneiro de Azkaban", "The book follows Harry Potter, a young wizard, in his third year at Hogwarts School of Witchcraft and Wizardry. Along with friends Ron Weasley and Hermione Granger, Harry investigates Sirius Black, an escaped prisoner from Azkaban who they believe is one of Lord Voldemort's old allies.", "http://harrypotteraudiobooks.org/wp-content/uploads/2015/10/harry-potter-and-the-prisoner-of-azkaban-free-audiobook-download.jpg", "https://en.wikipedia.org/wiki/Harry_Potter_and_the_Prisoner_of_Azkaban", "https://www.wook.pt/livro/harry-potter-e-o-prisioneiro-de-azkaban-j-k-rowling/46787")
-
-
-init();
-
-/*library.addBook(book1);
-library.addBook(book2);
-library.addBook(book3);*/
-
-//library.nextbook();
-
+init("benfica");
+var totalLikes = 0;
+var totalDislikes = 0;
 function Stats() {
-    var totalLikes = 0;
-    var totalDislikes = 0;
+
 
     var book;
     //while we can dequeue books
@@ -126,6 +104,11 @@ function Stats() {
     $("#contador2").text(totalDislikes);
 }
 
+$("#executa_pesquisa").click(function(){
+    var paramPesquisa = $("#pesquisa").val();
+    init(paramPesquisa);
+})
+
 $(".landing").on("click", ".landingbutton", function () {
 
     $landing = $(this).parent();
@@ -150,3 +133,18 @@ $("#buttonLike").click(function () {
          Stats();
     }
 });
+
+$("#endPage").on("click", ".buttonrestart", function () {
+    $("#endPage").hide();
+    $("#mainPage").show();
+    contador += 2;
+    init("books");
+});
+
+var input = $("#pesquisa").val();
+
+$("#executa_pesquisa").click(function(){
+    $("#endPage").hide();
+    $("#mainPage").show();
+    init(input);
+})
